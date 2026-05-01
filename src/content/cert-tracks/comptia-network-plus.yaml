@@ -1,0 +1,12 @@
+name: "CompTIA Network+ (N10-009)"
+shortName: "Net+"
+vendor: CompTIA
+examCode: "N10-009"
+description: >-
+  Validates the essential networking skills needed to confidently design,
+  configure, manage, and troubleshoot any wired and wireless network.
+color: blue
+postOrder:
+  - "what-is-the-internet-really"
+  - "reverse-proxy-every-developer-needs"
+  - "bandwidth-monitoring-vnstat-systemd"

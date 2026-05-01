@@ -1,0 +1,7 @@
+services:
+  southernsky-blog:
+    image: localhost/southernsky-blog:latest
+    container_name: southernsky-blog
+    restart: unless-stopped
+    ports:
+      - "4006:3000"

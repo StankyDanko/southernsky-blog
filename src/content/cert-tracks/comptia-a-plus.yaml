@@ -1,0 +1,13 @@
+name: "CompTIA A+ (220-1101 & 220-1102)"
+shortName: "A+"
+vendor: CompTIA
+examCode: "220-1101 / 220-1102"
+description: >-
+  The foundational IT certification. Covers hardware, networking, mobile
+  devices, operating systems, security, and troubleshooting.
+color: green
+postOrder:
+  - "what-is-the-internet-really"
+  - "your-first-linux-terminal"
+  - "gpu-power-management"
+  - "backups-5-tier-system"

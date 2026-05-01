@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    @apply bg-sky-bg text-sky-text font-sans;
+  }
+
+  ::selection {
+    @apply bg-brand-blue/30;
+  }
+}
+
+@layer components {
+  .tier-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .tier-badge--foundations {
+    @apply bg-tier-foundations/15 text-tier-foundations;
+  }
+
+  .tier-badge--applied {
+    @apply bg-tier-applied/15 text-tier-applied;
+  }
+
+  .tier-badge--professional {
+    @apply bg-tier-professional/15 text-tier-professional;
+  }
+
+  .post-card {
+    @apply bg-sky-card border border-sky-border rounded-xl overflow-hidden hover:border-brand-blue/40 transition-colors;
+  }
+}

@@ -1,0 +1,40 @@
+---
+import { siteConfig } from '../data/site-config'
+
+const currentPath = Astro.url.pathname
+---
+
+<header class="sticky top-0 z-50 bg-sky-bg/80 backdrop-blur-lg border-b border-sky-border">
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-2.5 group">
+      <svg
+        viewBox="0 0 32 32"
+        class="w-7 h-7 text-brand-blue group-hover:text-brand-green transition-colors"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M8 20a6 6 0 0 1-.5-12A8 8 0 0 1 23 10h1a5 5 0 0 1 0 10H8z" />
+      </svg>
+      <span class="text-sm font-semibold text-sky-text hidden sm:inline">
+        SouthernSky <span class="text-sky-muted font-normal">Engineering</span>
+      </span>
+    </a>
+
+    <div class="flex items-center gap-1">
+      {siteConfig.nav.map((link) => (
+        <a
+          href={link.href}
+          class:list={[
+            'px-3 py-1.5 rounded-lg text-xs font-medium transition-colors',
+            currentPath === link.href
+              ? 'bg-brand-blue/10 text-brand-blue'
+              : 'text-sky-muted hover:text-sky-text hover:bg-sky-card',
+          ]}
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+  </nav>
+</header>

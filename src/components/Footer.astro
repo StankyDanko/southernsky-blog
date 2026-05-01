@@ -1,0 +1,34 @@
+---
+import { siteConfig } from '../data/site-config'
+---
+
+<footer class="border-t border-sky-border py-10 px-4 sm:px-6">
+  <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+    <p class="text-xs text-sky-muted">
+      &copy; {new Date().getFullYear()} SouthernSky Cloud LLC. All rights reserved.
+    </p>
+    <div class="flex items-center gap-4">
+      <a href="/rss.xml" class="text-xs text-sky-muted hover:text-brand-blue transition-colors">
+        RSS
+      </a>
+      {siteConfig.social.github && (
+        <a
+          href={siteConfig.social.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-xs text-sky-muted hover:text-brand-blue transition-colors"
+        >
+          GitHub
+        </a>
+      )}
+      <a
+        href="https://southernsky.cloud"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-xs text-sky-muted hover:text-brand-blue transition-colors"
+      >
+        southernsky.cloud
+      </a>
+    </div>
+  </div>
+</footer>

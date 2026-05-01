@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import PostCard from '../components/PostCard.astro'
+import { getCollection } from 'astro:content'
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+
+const featured = posts.find((p) => p.data.featured) || posts[0]
+const recent = posts.filter((p) => p !== featured).slice(0, 6)
+
+const tierCounts = {
+  foundations: posts.filter((p) => p.data.tier === 'foundations').length,
+  applied: posts.filter((p) => p.data.tier === 'applied').length,
+  professional: posts.filter((p) => p.data.tier === 'professional').length,
+}
+
+const dateOpts: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric', year: 'numeric' }
+const featuredDate = featured?.data.publishDate.toLocaleDateString('en-US', dateOpts)
+---
+
+<BaseLayout>
+  <Header slot="header" />
+
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 pt-16 pb-10">
+    <div class="text-center mb-12">
+      <p class="text-xs tracking-[4px] uppercase text-brand-blue font-semibold mb-3">
+        SouthernSky Engineering
+      </p>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-sky-text mb-4">
+        Learn by Building
+      </h1>
+      <p class="text-sky-muted max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+        Practical tech education from a working software engineer. Project-based tutorials,
+        certification study tracks, and real-world infrastructure insights.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-3 gap-3 max-w-md mx-auto mb-14">
+      <a href="/category/foundations" class="text-center p-3 rounded-xl bg-tier-foundations/10 border border-tier-foundations/20 hover:border-tier-foundations/40 transition-colors">
+        <p class="text-lg font-bold text-tier-foundations">{tierCounts.foundations}</p>
+        <p class="text-xs text-sky-muted">Foundations</p>
+      </a>
+      <a href="/category/applied" class="text-center p-3 rounded-xl bg-tier-applied/10 border border-tier-applied/20 hover:border-tier-applied/40 transition-colors">
+        <p class="text-lg font-bold text-tier-applied">{tierCounts.applied}</p>
+        <p class="text-xs text-sky-muted">Applied</p>
+      </a>
+      <a href="/category/professional" class="text-center p-3 rounded-xl bg-tier-professional/10 border border-tier-professional/20 hover:border-tier-professional/40 transition-colors">
+        <p class="text-lg font-bold text-tier-professional">{tierCounts.professional}</p>
+        <p class="text-xs text-sky-muted">Professional</p>
+      </a>
+    </div>
+  </section>
+
+  {featured && (
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 pb-12">
+      <p class="text-xs tracking-[3px] uppercase text-sky-muted font-semibold mb-4">Featured</p>
+      <a href={`/blog/${featured.slug}`} class="post-card block group p-6 sm:p-8">
+        <span class={`tier-badge tier-badge--${featured.data.tier} mb-3`}>
+          {featured.data.tier}
+        </span>
+        <h2 class="text-xl sm:text-2xl font-bold text-sky-text group-hover:text-brand-blue transition-colors mb-3">
+          {featured.data.title}
+        </h2>
+        <p class="text-sky-muted text-sm leading-relaxed max-w-2xl">
+          {featured.data.description}
+        </p>
+        <p class="text-xs text-sky-muted mt-4">
+          {featured.data.estimatedMinutes} min read &middot; {featuredDate}
+        </p>
+      </a>
+    </section>
+  )}
+
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
+    <p class="text-xs tracking-[3px] uppercase text-sky-muted font-semibold mb-4">Recent Posts</p>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {recent.map((post) => (
+        <PostCard
+          title={post.data.title}
+          description={post.data.description}
+          href={`/blog/${post.slug}`}
+          tier={post.data.tier}
+          category={post.data.category}
+          publishDate={post.data.publishDate}
+          estimatedMinutes={post.data.estimatedMinutes}
+          tags={post.data.tags}
+        />
+      ))}
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
