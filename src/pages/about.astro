@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+---
+
+<BaseLayout title="About" description="Meet J. Martin — software engineer, educator, and the author behind the SouthernSky Engineering Blog.">
+  <Header slot="header" />
+
+  <section class="max-w-3xl mx-auto px-4 sm:px-6 py-16">
+    <div class="flex items-center gap-5 mb-10">
+      <div class="w-20 h-20 rounded-full bg-brand-blue/10 flex items-center justify-center shrink-0">
+        <span class="text-brand-blue font-bold text-2xl">JM</span>
+      </div>
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-bold text-sky-text">J. Martin</h1>
+        <p class="text-sky-muted text-sm">Software Engineer at SouthernSky Cloud LLC</p>
+      </div>
+    </div>
+
+    <div class="prose prose-invert max-w-none">
+      <h2>Why This Blog Exists</h2>
+
+      <p>
+        I build software for a living — intelligent infrastructure, AI tooling, geospatial
+        systems. But I grew up in a small town where none of that existed in the classroom.
+        When I got to Georgia Tech, I realized how much catching up students from small
+        schools have to do. Not because they're less capable, but because nobody showed
+        them what was possible.
+      </p>
+
+      <p>
+        This blog is my attempt to close that gap. Every post is a real project from my
+        own work — not theoretical exercises, but actual systems I've built, bugs I've
+        debugged, and infrastructure I run every day. If a high school student in rural
+        Georgia can follow along and deploy something real, I've done my job.
+      </p>
+
+      <h2>How I Think About Teaching</h2>
+
+      <p>
+        I don't believe in "teaching." Learning is what happens, and it happens on
+        the student's side. The best thing an instructor can do is create conditions
+        where learning comes naturally — pique curiosity, remove friction, then get
+        out of the way.
+      </p>
+
+      <p>
+        When you genuinely make someone curious, they become a ravenous learning machine.
+        The trick isn't to force information into their brain — it's to light a fire
+        and then feed it.
+      </p>
+
+      <p>
+        Every post on this blog follows that principle. I start with "why should you
+        care?" before I show you how. If I can't answer that question honestly, the
+        post doesn't get published.
+      </p>
+
+      <h2>Performative Exemplification</h2>
+
+      <p>
+        There's a concept I hold as a core principle: the content should <em>be</em>
+        what it teaches. A post about clean architecture should itself have clean
+        architecture. A tutorial on web design should itself be beautifully designed.
+        The blog's own codebase and infrastructure exemplify the engineering standards
+        it teaches.
+      </p>
+
+      <p>
+        You learn design by experiencing good design. You learn engineering by reading
+        well-engineered content. The medium is the message.
+      </p>
+
+      <h2>Three Tiers</h2>
+
+      <p>
+        Content is organized into three levels so you always know where you stand:
+      </p>
+
+      <ul>
+        <li><strong class="text-tier-foundations">Foundations</strong> — high school level. No prerequisites. Start here if you're curious about technology.</li>
+        <li><strong class="text-tier-applied">Applied</strong> — college level. Hands-on projects. You'll build and deploy real things.</li>
+        <li><strong class="text-tier-professional">Professional</strong> — career level. Production architecture, debugging stories, and the hard-won lessons that only come from running real systems.</li>
+      </ul>
+
+      <h2>Certification Tracks</h2>
+
+      <p>
+        Posts are organized into <a href="/cert-track">certification study tracks</a>
+        aligned with CompTIA, AWS, and other industry credentials. Each track sequences
+        posts into an ordered study path — follow it start to finish and you'll cover
+        the key concepts, reinforced by real projects instead of rote memorization.
+      </p>
+
+      <h2>About SouthernSky Cloud</h2>
+
+      <p>
+        <a href="https://southernsky.cloud" target="_blank" rel="noopener noreferrer">SouthernSky Cloud LLC</a>
+        is my software company focused on intelligent infrastructure for communities
+        that get overlooked by big tech. The engineering blog is part of that mission —
+        making practical technology education freely available to anyone willing to learn.
+      </p>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>

@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Header from '../../components/Header.astro'
+import Footer from '../../components/Footer.astro'
+import DifficultyBadge from '../../components/DifficultyBadge.astro'
+import { getCollection } from 'astro:content'
+
+export async function getStaticPaths() {
+  const tracks = await getCollection('cert-tracks')
+  return tracks.map((track) => ({
+    params: { track: track.id },
+    props: { track },
+  }))
+}
+
+const { track } = Astro.props
+const allPosts = await getCollection('posts', ({ data }) => !data.draft)
+
+const orderedPosts = track.data.postOrder.map((slug: string) => {
+  const post = allPosts.find((p) => p.slug.endsWith(slug))
+  return { slug, post }
+})
+---
+
+<BaseLayout title={track.data.name} description={track.data.description}>
+  <Header slot="header" />
+
+  <section class="max-w-4xl mx-auto px-4 sm:px-6 py-16">
+    <div class="mb-10">
+      <div class="flex items-center gap-3 mb-3">
+        <span class={`inline-flex items-center px-3 py-1 rounded text-sm font-bold bg-${track.data.color}-500/15 text-${track.data.color}-400`}>
+          {track.data.shortName}
+        </span>
+        <span class="text-xs text-sky-muted">{track.data.vendor}</span>
+        {track.data.examCode && (
+          <span class="text-xs text-sky-muted">Exam: {track.data.examCode}</span>
+        )}
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-bold text-sky-text mb-3">
+        {track.data.name}
+      </h1>
+      <p class="text-sky-muted text-sm sm:text-base max-w-2xl">
+        {track.data.description}
+      </p>
+    </div>
+
+    <div class="space-y-3">
+      {orderedPosts.map(({ slug, post }: { slug: string; post: any }, i: number) => (
+        post ? (
+          <a href={`/blog/${post.slug}`} class="post-card flex items-start gap-4 p-4 group">
+            <div class="w-8 h-8 rounded-full bg-brand-blue/10 flex items-center justify-center shrink-0 mt-0.5">
+              <span class="text-brand-blue text-xs font-bold">{i + 1}</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-sm font-semibold text-sky-text group-hover:text-brand-blue transition-colors mb-1">
+                {post.data.title}
+              </h3>
+              <div class="flex items-center gap-2">
+                <DifficultyBadge level={post.data.difficulty} />
+                <span class="text-xs text-sky-muted">{post.data.estimatedMinutes} min</span>
+              </div>
+            </div>
+          </a>
+        ) : (
+          <div class="flex items-start gap-4 p-4 border border-sky-border/50 rounded-xl opacity-50">
+            <div class="w-8 h-8 rounded-full bg-sky-border/30 flex items-center justify-center shrink-0 mt-0.5">
+              <span class="text-sky-muted text-xs font-bold">{i + 1}</span>
+            </div>
+            <div>
+              <p class="text-sm text-sky-muted italic">Coming soon</p>
+              <p class="text-xs text-sky-muted/50">{slug.replace(/-/g, ' ')}</p>
+            </div>
+          </div>
+        )
+      ))}
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>

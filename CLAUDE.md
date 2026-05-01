@@ -4,6 +4,14 @@
 
 Practical, project-based tech education inspired by Network Chuck. Three content tiers, certification study tracks, agent-assisted content pipeline.
 
+## Core Ethos
+
+**Performative Exemplification:** Every post must BE what it teaches. A post about clean code is itself clean code. The blog's codebase exemplifies the engineering standards it teaches. The medium enacts the message.
+
+**Constructivist Learning:** Teachers don't "teach" — learning happens on the student's side. Lead with curiosity ("why should you care?"), structure as guided discovery, let students arrive at insights through doing. Never lecture — ignite, then feed the fire.
+
+When writing or reviewing posts, ask: "Does this post perform what it teaches? Would a curious student discover the insight themselves?"
+
 ## Live Deployment
 
 | Target | URL | Port | Status |

@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Header from '../../components/Header.astro'
+import Footer from '../../components/Footer.astro'
+import { getCollection } from 'astro:content'
+
+const tracks = await getCollection('cert-tracks')
+const posts = await getCollection('posts', ({ data }) => !data.draft)
+
+const trackData = tracks.map((track) => {
+  const trackPosts = posts.filter((p) => p.data.certTracks.includes(track.id))
+  return { ...track, postCount: trackPosts.length }
+})
+---
+
+<BaseLayout title="Certification Study Tracks" description="Ordered study paths aligned with industry certifications. Learn by building real projects.">
+  <Header slot="header" />
+
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16">
+    <div class="mb-10">
+      <p class="text-xs tracking-[3px] uppercase text-brand-blue font-semibold mb-2">Study Paths</p>
+      <h1 class="text-3xl sm:text-4xl font-bold text-sky-text mb-3">
+        Certification Tracks
+      </h1>
+      <p class="text-sky-muted text-sm sm:text-base max-w-2xl">
+        Structured learning paths aligned with industry certifications. Each track sequences
+        posts into a study guide you can follow from start to finish.
+      </p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-4">
+      {trackData.map((track) => (
+        <a href={`/cert-track/${track.id}`} class="post-card block group p-6">
+          <div class="flex items-center gap-3 mb-3">
+            <span class={`inline-flex items-center px-2.5 py-1 rounded text-xs font-bold bg-${track.data.color}-500/15 text-${track.data.color}-400`}>
+              {track.data.shortName}
+            </span>
+            <span class="text-xs text-sky-muted">{track.data.vendor}</span>
+          </div>
+          <h2 class="text-lg font-semibold text-sky-text group-hover:text-brand-blue transition-colors mb-2">
+            {track.data.name}
+          </h2>
+          <p class="text-sm text-sky-muted line-clamp-2 mb-3">
+            {track.data.description}
+          </p>
+          <p class="text-xs text-sky-muted">
+            {track.postCount} post{track.postCount !== 1 ? 's' : ''} &middot; {track.data.postOrder.length} in study path
+          </p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>

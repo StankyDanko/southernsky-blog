@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Header from '../../components/Header.astro'
+import Footer from '../../components/Footer.astro'
+import PostCard from '../../components/PostCard.astro'
+import { getCollection } from 'astro:content'
+
+export async function getStaticPaths() {
+  return [
+    { params: { tier: 'foundations' } },
+    { params: { tier: 'applied' } },
+    { params: { tier: 'professional' } },
+  ]
+}
+
+const { tier } = Astro.params
+
+const tierMeta: Record<string, { label: string; desc: string; color: string }> = {
+  foundations: {
+    label: 'Foundations',
+    desc: 'Entry-level concepts for curious beginners. No prerequisites — just curiosity.',
+    color: 'tier-foundations',
+  },
+  applied: {
+    label: 'Applied',
+    desc: 'Hands-on projects that build real skills. You\'ll deploy something by the end.',
+    color: 'tier-applied',
+  },
+  professional: {
+    label: 'Professional',
+    desc: 'Production-grade patterns from real systems. Architecture decisions, debugging stories, and hard-won lessons.',
+    color: 'tier-professional',
+  },
+}
+
+const meta = tierMeta[tier!]
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft && data.tier === tier))
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+---
+
+<BaseLayout title={meta.label} description={meta.desc}>
+  <Header slot="header" />
+
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16">
+    <div class="mb-10">
+      <span class={`tier-badge tier-badge--${tier} mb-3`}>{meta.label}</span>
+      <h1 class="text-3xl sm:text-4xl font-bold text-sky-text mt-3 mb-3">
+        {meta.label}
+      </h1>
+      <p class="text-sky-muted text-sm sm:text-base max-w-2xl">
+        {meta.desc}
+      </p>
+    </div>
+
+    {posts.length > 0 ? (
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {posts.map((post) => (
+          <PostCard
+            title={post.data.title}
+            description={post.data.description}
+            href={`/blog/${post.slug}`}
+            tier={post.data.tier}
+            category={post.data.category}
+            publishDate={post.data.publishDate}
+            estimatedMinutes={post.data.estimatedMinutes}
+            tags={post.data.tags}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="text-sky-muted text-sm">No posts in this tier yet. Check back soon.</p>
+    )}
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>

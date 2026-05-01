@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Header from '../../components/Header.astro'
+import Footer from '../../components/Footer.astro'
+import PostCard from '../../components/PostCard.astro'
+import { getCollection } from 'astro:content'
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft)
+  const tags = [...new Set(posts.flatMap((p) => p.data.tags))]
+  return tags.map((tag) => ({ params: { tag } }))
+}
+
+const { tag } = Astro.params
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft && data.tags.includes(tag!)))
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+---
+
+<BaseLayout title={`#${tag}`} description={`Posts tagged "${tag}" on the SouthernSky Engineering Blog`}>
+  <Header slot="header" />
+
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16">
+    <div class="mb-10">
+      <p class="text-xs tracking-[3px] uppercase text-sky-muted font-semibold mb-2">Tag</p>
+      <h1 class="text-3xl sm:text-4xl font-bold text-sky-text mb-2">
+        #{tag}
+      </h1>
+      <p class="text-sky-muted text-sm">{posts.length} post{posts.length !== 1 ? 's' : ''}</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {posts.map((post) => (
+        <PostCard
+          title={post.data.title}
+          description={post.data.description}
+          href={`/blog/${post.slug}`}
+          tier={post.data.tier}
+          category={post.data.category}
+          publishDate={post.data.publishDate}
+          estimatedMinutes={post.data.estimatedMinutes}
+          tags={post.data.tags}
+        />
+      ))}
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>

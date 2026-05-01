@@ -2,6 +2,22 @@
 
 Source: Grok 4.20 research (2026-05-01), Network Chuck / Fireship / Nana / freeCodeCamp analysis.
 
+## Core Ethos
+
+### Performative Exemplification
+The content must BE what it teaches. A post about clean architecture should itself have clean architecture. A tutorial on design should itself be beautifully designed. The blog's codebase, layout, and infrastructure are themselves teaching materials — students absorb the meta-lesson by experiencing it.
+
+### Constructivist Learning
+Teachers don't "teach" — learning happens on the student's side. Our job is to create conditions that make learning easy: pique curiosity first, then feed the fire. Never force information into someone's brain. When you ignite genuine curiosity, students become ravenous learning machines. Structure every post as guided discovery, not lecture.
+
+### What This Means in Practice
+- Lead with "why should you care?" — ignite before you inform
+- Every post is a working example of what it teaches
+- Let the student arrive at the insight through doing, not reading
+- The blog itself exemplifies the engineering standards it teaches
+- Never write "you should do X" without the post itself doing X
+- Real errors, real terminal output, real costs — authenticity over polish
+
 ## What Works (patterns from top tech educators)
 
 - **Project-based over theory** — every post should end with something the reader built or deployed
