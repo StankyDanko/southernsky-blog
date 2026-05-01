@@ -130,7 +130,7 @@ const toc = headings?.filter((h: { depth: number }) => h.depth <= 3) || []
     )}
 
     <div class="lg:grid lg:grid-cols-[1fr_200px] lg:gap-10">
-      <div class="prose prose-invert max-w-none">
+      <div class="prose prose-invert max-w-none overflow-x-hidden [&_pre]:overflow-x-auto [&_table]:overflow-x-auto [&_table]:block">
         <slot />
       </div>
 
