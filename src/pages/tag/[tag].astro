@@ -40,6 +40,7 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft && data.ta
           publishDate={post.data.publishDate}
           estimatedMinutes={post.data.estimatedMinutes}
           tags={post.data.tags}
+          heroImage={post.data.heroImage}
         />
       ))}
     </div>

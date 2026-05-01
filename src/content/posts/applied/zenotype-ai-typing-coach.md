@@ -12,6 +12,7 @@ category: javascript-typescript
 tags: ["typescript", "ollama", "typing", "education", "vanilla-js", "vite"]
 certTracks: []
 featured: false
+heroImage: "/images/posts/zenotype-ai-typing-coach.webp"
 draft: false
 ---
 

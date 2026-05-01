@@ -1,0 +1,65 @@
+---
+interface Props {
+  image: string
+  alt: string
+  animated?: boolean
+  class?: string
+}
+
+const { image, alt, animated = false, class: className = '' } = Astro.props
+const videoSrc = image.replace(/\.webp$/, '.webm')
+---
+
+{animated ? (
+  <div class={`animated-hero ${className}`} data-video-src={videoSrc} data-fallback-src={image} data-alt={alt}>
+    <img
+      src={image}
+      alt={alt}
+      class="animated-hero__fallback w-full h-full object-cover"
+      loading="eager"
+    />
+  </div>
+) : (
+  <img
+    src={image}
+    alt={alt}
+    class={`w-full object-cover ${className}`}
+    loading="eager"
+  />
+)}
+
+<script>
+  document.querySelectorAll('.animated-hero').forEach(container => {
+    const videoSrc = container.getAttribute('data-video-src');
+    if (!videoSrc) return;
+
+    const video = document.createElement('video');
+    video.autoplay = true;
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.style.width = '100%';
+    video.style.height = '100%';
+    video.style.objectFit = 'cover';
+    video.style.position = 'absolute';
+    video.style.inset = '0';
+
+    const source = document.createElement('source');
+    source.src = videoSrc;
+    source.type = 'video/webm';
+    video.appendChild(source);
+
+    container.style.position = 'relative';
+
+    video.addEventListener('canplay', () => {
+      container.prepend(video);
+      const fallback = container.querySelector('.animated-hero__fallback') as HTMLElement;
+      if (fallback) fallback.style.opacity = '0';
+      video.play().catch(() => {});
+    }, { once: true });
+
+    source.addEventListener('error', () => {}, { once: true });
+
+    video.load();
+  });
+</script>

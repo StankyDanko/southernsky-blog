@@ -8,7 +8,7 @@ const tracks = await getCollection('cert-tracks')
 const posts = await getCollection('posts', ({ data }) => !data.draft)
 
 const trackData = tracks.map((track) => {
-  const trackPosts = posts.filter((p) => p.data.certTracks.includes(track.id))
+  const trackPosts = posts.filter((p) => p.data.certTracks?.includes(track.id))
   return { ...track, postCount: trackPosts.length }
 })
 ---

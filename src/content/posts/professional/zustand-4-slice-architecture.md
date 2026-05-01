@@ -12,6 +12,7 @@ category: web-development
 tags: ["zustand", "state-management", "react", "architecture", "typescript"]
 certTracks: []
 featured: false
+heroImage: "/images/posts/zustand-4-slice-architecture.webp"
 draft: false
 ---
 

@@ -12,6 +12,7 @@ category: linux
 tags: ["nvidia", "systemd", "gpu", "power-management", "rtx-3080-ti"]
 certTracks: ["comptia-a-plus"]
 featured: false
+heroImage: "/images/posts/gpu-power-management.webp"
 draft: false
 ---
 

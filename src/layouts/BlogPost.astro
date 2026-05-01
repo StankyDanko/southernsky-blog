@@ -3,6 +3,7 @@ import BaseLayout from './BaseLayout.astro'
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import DifficultyBadge from '../components/DifficultyBadge.astro'
+import AnimatedHero from '../components/AnimatedHero.astro'
 import { articleJsonLd, breadcrumbJsonLd } from '../lib/structured-data'
 import { siteConfig } from '../data/site-config'
 
@@ -25,7 +26,12 @@ const jsonLd = [
 const toc = headings?.filter((h: { depth: number }) => h.depth <= 3) || []
 ---
 
-<BaseLayout title={frontmatter.title} description={frontmatter.description} jsonLd={jsonLd}>
+<BaseLayout
+  title={frontmatter.title}
+  description={frontmatter.description}
+  ogImage={frontmatter.heroImage ? `${siteConfig.url}${frontmatter.heroImage}` : undefined}
+  jsonLd={jsonLd}
+>
   <Header slot="header" />
 
   <article class="max-w-4xl mx-auto px-4 sm:px-6 py-12">
@@ -38,6 +44,17 @@ const toc = headings?.filter((h: { depth: number }) => h.depth <= 3) || []
       <span class="mx-1.5">/</span>
       <span class="text-sky-text">{frontmatter.title}</span>
     </nav>
+
+    {frontmatter.heroImage && (
+      <div class="mb-8 -mx-4 sm:mx-0 sm:rounded-xl overflow-hidden">
+        <AnimatedHero
+          image={frontmatter.heroImage}
+          alt={frontmatter.title}
+          animated={true}
+          class="h-48 sm:h-64 lg:h-80"
+        />
+      </div>
+    )}
 
     <header class="mb-10">
       <div class="flex flex-wrap items-center gap-2 mb-4">
@@ -141,9 +158,13 @@ const toc = headings?.filter((h: { depth: number }) => h.depth <= 3) || []
 
     <footer class="mt-14 pt-8 border-t border-sky-border">
       <div class="flex items-center gap-4">
-        <div class="w-12 h-12 rounded-full bg-brand-blue/10 flex items-center justify-center">
-          <span class="text-brand-blue font-bold text-sm">JM</span>
-        </div>
+        <img
+          src="/images/authors/j-martin.webp"
+          alt="J. Martin"
+          class="w-12 h-12 rounded-full object-cover"
+          width="48"
+          height="48"
+        />
         <div>
           <p class="text-sm font-semibold text-sky-text">J. Martin</p>
           <p class="text-xs text-sky-muted">Software Engineer at SouthernSky Cloud LLC</p>

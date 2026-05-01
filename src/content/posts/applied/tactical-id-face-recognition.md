@@ -12,6 +12,7 @@ category: ai-ml
 tags: ["face-recognition", "privacy", "dlib", "opencv", "python", "documentary"]
 certTracks: ["comptia-security-plus"]
 featured: false
+heroImage: "/images/posts/tactical-id-face-recognition.webp"
 draft: false
 ---
 

@@ -12,6 +12,7 @@ category: ai-ml
 tags: ["ollama", "ai", "local-llm", "gpu", "home-lab", "privacy"]
 certTracks: ["comptia-a-plus"]
 featured: true
+heroImage: "/images/posts/personal-ai-lab.webp"
 draft: false
 ---
 
@@ -27,7 +28,7 @@ Here's exactly how I built it.
 
 You don't need exotic hardware, but you do need a GPU with enough VRAM to load a model. VRAM is the binding constraint — it's where the model weights live during inference.
 
-My workstation, Zeus:
+My workstation:
 
 | Component | Spec | Why It Matters |
 |-----------|------|----------------|

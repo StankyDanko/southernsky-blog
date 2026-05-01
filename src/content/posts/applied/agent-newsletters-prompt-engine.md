@@ -12,6 +12,7 @@ category: ai-ml
 tags: ["ai", "newsletters", "prompt-engineering", "n8n", "automation", "grok"]
 certTracks: []
 featured: false
+heroImage: "/images/posts/agent-newsletters-prompt-engine.webp"
 draft: false
 ---
 

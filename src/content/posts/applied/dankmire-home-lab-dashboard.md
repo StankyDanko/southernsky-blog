@@ -12,6 +12,7 @@ category: web-development
 tags: ["preact", "express", "sqlite", "dashboard", "home-lab", "cli"]
 certTracks: []
 featured: false
+heroImage: "/images/posts/dankmire-home-lab-dashboard.webp"
 draft: false
 ---
 
@@ -214,9 +215,9 @@ const meta = {
 Sample run over a 500GB footage directory:
 
 ```
-$ node ingest/scan.mjs /mnt/onyx/footage/
+$ node ingest/scan.mjs /mnt/data-drive/footage/
 
-Scanning /mnt/onyx/footage/...
+Scanning /mnt/data-drive/footage/...
 Found 2,847 media files
 
 Hashing:    2847/2847  [43.2s]
@@ -310,7 +311,7 @@ function getGpuStatus() {
 }
 ```
 
-**Disk usage** — `df` parsed for monitored mount points: `/`, `/mnt/onyx`, `/mnt/sandisk2tb`.
+**Disk usage** — `df` parsed for monitored mount points: `/`, `/mnt/data-drive`, `/mnt/backup-drive`.
 
 **Service health** — `systemctl is-active <service>` for `ollama.service`, `gpu-power-limit.service`, `openwebui-https.service`. Returns `active`, `inactive`, or `failed`.
 
@@ -340,11 +341,11 @@ Thirty-second polling is deliberate. This is a status check, not a monitoring sy
 
 ## NAS Archive Flow
 
-When local disk gets tight, assets move to the Synology NAS (Atlas). The archive command:
+When local disk gets tight, assets move to the NAS. The archive command:
 
 ```bash
 # Copy to NAS over SMB mount
-rsync -av /mnt/onyx/footage/clip.mp4 /mnt/nas/archive/footage/
+rsync -av /mnt/data-drive/footage/clip.mp4 /mnt/nas/archive/footage/
 
 # Update the database record
 node bin/archive.mjs --file clip.mp4 --nas-path /archive/footage/clip.mp4

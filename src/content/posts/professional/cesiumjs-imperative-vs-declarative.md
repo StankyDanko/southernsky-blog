@@ -12,6 +12,7 @@ category: web-development
 tags: ["cesium", "resium", "react", "performance", "3d-rendering", "imperative"]
 certTracks: []
 featured: false
+heroImage: "/images/posts/cesiumjs-imperative-vs-declarative.webp"
 draft: false
 ---
 

@@ -12,6 +12,7 @@ category: networking
 tags: ["networking", "dns", "tcp-ip", "infrastructure", "how-the-internet-works"]
 certTracks: ["comptia-a-plus", "comptia-network-plus"]
 featured: false
+heroImage: "/images/posts/what-is-the-internet-really.webp"
 draft: false
 ---
 
@@ -48,7 +49,7 @@ Closer to home, my dad's ISP owns the last mile: the fiber or copper that runs f
 
 The internet runs on a protocol stack called TCP/IP. Two layers matter most at this level:
 
-**IP (Internet Protocol)** — Every device gets an address. Your laptop is something like `192.168.1.5` on your local network. The web server you're connecting to might be `104.243.45.247`. IP handles routing: getting packets from one address to another across many hops.
+**IP (Internet Protocol)** — Every device gets an address. Your laptop is something like `192.168.1.5` on your local network. The web server you're connecting to might be `203.0.113.50`. IP handles routing: getting packets from one address to another across many hops.
 
 **TCP (Transmission Control Protocol)** — TCP ensures reliable delivery. It breaks your request into numbered packets, sends them, and requires the other side to confirm receipt. If a packet gets lost, TCP resends it. This is why a big file download doesn't silently corrupt — TCP catches the missing pieces.
 
@@ -103,28 +104,28 @@ When a webpage is slow, the problem is somewhere between you and the server. `tr
 ```bash
 $ traceroute blog.southernsky.cloud
 
-traceroute to blog.southernsky.cloud (104.243.45.247), 30 hops max, 60 byte packets
+traceroute to example-blog.cloud (203.0.113.50), 30 hops max, 60 byte packets
  1  192.168.1.1 (192.168.1.1)            1.2 ms   1.1 ms   1.0 ms
  2  10.0.0.1 (10.0.0.1)                  8.4 ms   8.1 ms   8.3 ms
- 3  96.120.4.1 (96.120.4.1)             12.1 ms  11.9 ms  12.2 ms
- 4  be-302-ar01.birmingham.al (68.87.210.221)  15.3 ms  15.1 ms  15.4 ms
- 5  be-52-ar01.atlanta.ga (96.110.40.33)       22.7 ms  22.5 ms  22.6 ms
- 6  66.208.228.14 (66.208.228.14)              24.1 ms  23.9 ms  24.0 ms
- 7  104.243.45.247 (104.243.45.247)            24.8 ms  24.6 ms  24.7 ms
+ 3  isp-regional.example (198.51.100.1)  12.1 ms  11.9 ms  12.2 ms
+ 4  core-router-01.example (198.51.100.5)      15.3 ms  15.1 ms  15.4 ms
+ 5  exchange-southeast.example (198.51.100.12) 22.7 ms  22.5 ms  22.6 ms
+ 6  datacenter-gw.example (198.51.100.20)      24.1 ms  23.9 ms  24.0 ms
+ 7  203.0.113.50 (203.0.113.50)            24.8 ms  24.6 ms  24.7 ms
 ```
 
-Seven hops. Hop 1 is my router. Hop 2 is my ISP's first router. By hop 4 I'm in Birmingham, hop 5 in Atlanta, and then straight to the VPS. Total latency: 24ms.
+Seven hops. Hop 1 is my router. Hop 2 is my ISP's first device. Hops 3-6 are the backbone — regional routers, internet exchanges, datacenter gateways. Hop 7 is the destination. Total latency: 24ms.
 
-If hop 4 suddenly showed 300ms, I'd know the problem is between my ISP's network and their Atlanta hub — not on my end, not on the server's end.
+If hop 4 suddenly showed 300ms, I'd know the problem is in the backbone — not on my end, not on the server's end.
 
 ## What "The Cloud" Actually Is
 
 Hosting companies like AWS, DigitalOcean, and Vultr own enormous data centers — warehouses filled with servers connected to massive network pipes. When you pay for a VPS (Virtual Private Server), you're renting a slice of one of those physical machines.
 
-The server running this blog is a VPS at `104.243.45.247`. It's a real machine in a data center. When you load this page:
+The server running this blog is a VPS at `203.0.113.50`. It's a real machine in a data center. When you load this page:
 
-1. Your browser looks up `blog.southernsky.cloud` via DNS → gets `104.243.45.247`
-2. TCP connection opens between your IP and `104.243.45.247` on port 443 (HTTPS)
+1. Your browser looks up `blog.southernsky.cloud` via DNS → gets `203.0.113.50`
+2. TCP connection opens between your IP and `203.0.113.50` on port 443 (HTTPS)
 3. TLS handshake encrypts the connection
 4. Your browser sends an HTTP GET request for the page
 5. The server sends back HTML, CSS, JavaScript

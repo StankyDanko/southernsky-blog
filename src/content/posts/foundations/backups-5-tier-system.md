@@ -12,6 +12,7 @@ category: linux
 tags: ["backups", "bash", "rsync", "disaster-recovery", "sysadmin"]
 certTracks: ["comptia-a-plus", "comptia-linux-plus"]
 featured: false
+heroImage: "/images/posts/backups-5-tier-system.webp"
 draft: false
 ---
 
@@ -27,7 +28,7 @@ Backup philosophy is deceptively simple — copy important files somewhere else.
 
 I use two physical destinations and one cloud:
 
-**SanDisk 2TB external drive** (`/mnt/sandisk2tb`, exFAT) — primary backup target. Cross-platform filesystem means I can read it from any OS. Plugs in when I run backups, unplugs when I don't — an offline copy is immune to ransomware and accidental `rm -rf`.
+**SanDisk 2TB external drive** (`/mnt/backup-drive`, exFAT) — primary backup target. Cross-platform filesystem means I can read it from any OS. Plugs in when I run backups, unplugs when I don't — an offline copy is immune to ransomware and accidental `rm -rf`.
 
 **GitHub private repo** (`StankyDanko/claude-config-backup`) — sanitized cloud mirror of AI config and code. No credentials, no conversation history, just code and settings. Survives the house burning down.
 
@@ -44,7 +45,7 @@ The data that's hardest to recreate. My documentary project (ScorsAI) includes p
 ```bash
 rsync -av --delete \
   ~/projects/scorsai/ \
-  /mnt/sandisk2tb/backups/scorsai/
+  /mnt/backup-drive/backups/scorsai/
 ```
 
 The `--delete` flag is important: it removes files from the backup that you've deleted from the source. Without it, old deleted files pile up and the backup diverges from reality over time.
@@ -56,7 +57,7 @@ This one is unique to my setup but illustrates a general principle: some data is
 ```bash
 rsync -av \
   ~/projects/digital-life-mgmt/archive/ \
-  /mnt/sandisk2tb/backups/archive/
+  /mnt/backup-drive/backups/archive/
 ```
 
 No `--delete` here — I want the backup to accumulate even if I reorganize source files. This is a preservation copy, not a sync.
@@ -68,7 +69,7 @@ This one surprised me when I first inventoried it. My `~/.claude/` directory con
 ```bash
 rsync -av --exclude='*.jsonl' \
   ~/.claude/ \
-  /mnt/sandisk2tb/backups/claude/
+  /mnt/backup-drive/backups/claude/
 ```
 
 The `--exclude='*.jsonl'` skips conversation history files. They're enormous and contain sensitive content. Memory files and skills are what actually matter for continuity.
@@ -93,7 +94,7 @@ rsync -av \
   --exclude='venv/' \
   --exclude='__pycache__/' \
   ~/tools/ai-scripts/ \
-  /mnt/sandisk2tb/backups/api-tools/ai-scripts/
+  /mnt/backup-drive/backups/api-tools/ai-scripts/
 ```
 
 The excludes matter — `node_modules/` and `venv/` are reproducible from `package.json` and `requirements.txt`. Backing them up wastes space and time. Back the config, not the cache.
@@ -104,7 +105,7 @@ The smallest tier but often the most annoying to lose. This covers:
 
 - `~/.bashrc` — shell configuration built up over years
 - `~/.ssh/` — private keys and known hosts
-- `~/.env-ai-keys` — centralized API key file
+- `~/.env-keys` — centralized API key file
 - `~/CLAUDE.md` — the instruction file that defines how Claude behaves in this environment
 - The backup scripts themselves
 
@@ -112,10 +113,10 @@ The smallest tier but often the most annoying to lose. This covers:
 rsync -av \
   ~/.bashrc \
   ~/.ssh/ \
-  ~/.env-ai-keys \
+  ~/.env-keys \
   ~/CLAUDE.md \
   ~/tools/backup/ \
-  /mnt/sandisk2tb/backups/system/
+  /mnt/backup-drive/backups/system/
 ```
 
 Losing SSH private keys means you're locked out of your VPS and any other remote server you've configured key-based auth for. The recovery process is painful (requires console access or having previously authorized a backup key). Back these up.
@@ -140,28 +141,28 @@ if $DRY_RUN; then
 fi
 
 # Verify destination is mounted
-if ! mountpoint -q /mnt/sandisk2tb; then
-  echo "ERROR: /mnt/sandisk2tb is not mounted. Aborting."
+if ! mountpoint -q /mnt/backup-drive; then
+  echo "ERROR: /mnt/backup-drive is not mounted. Aborting."
   exit 1
 fi
 
 echo "=== Tier 1a: ScorsAI ==="
-rsync $RSYNC_OPTS ~/projects/scorsai/ /mnt/sandisk2tb/backups/scorsai/
+rsync $RSYNC_OPTS ~/projects/scorsai/ /mnt/backup-drive/backups/scorsai/
 
 echo "=== Tier 1b: Archive ==="
-rsync -av ~/projects/digital-life-mgmt/archive/ /mnt/sandisk2tb/backups/archive/
+rsync -av ~/projects/digital-life-mgmt/archive/ /mnt/backup-drive/backups/archive/
 
 echo "=== Tier 2: Claude config ==="
-rsync $RSYNC_OPTS --exclude='*.jsonl' ~/.claude/ /mnt/sandisk2tb/backups/claude/
+rsync $RSYNC_OPTS --exclude='*.jsonl' ~/.claude/ /mnt/backup-drive/backups/claude/
 
 echo "=== Tier 3: API tools ==="
 rsync $RSYNC_OPTS \
   --exclude='node_modules/' --exclude='venv/' --exclude='__pycache__/' \
-  ~/tools/ai-scripts/ /mnt/sandisk2tb/backups/api-tools/
+  ~/tools/ai-scripts/ /mnt/backup-drive/backups/api-tools/
 
 echo "=== Tier 4: System config ==="
-rsync -av ~/.bashrc ~/.ssh/ ~/.env-ai-keys ~/CLAUDE.md \
-  ~/tools/backup/ /mnt/sandisk2tb/backups/system/
+rsync -av ~/.bashrc ~/.ssh/ ~/.env-keys ~/CLAUDE.md \
+  ~/tools/backup/ /mnt/backup-drive/backups/system/
 
 echo ""
 echo "Backup complete. $(date)"
@@ -193,7 +194,7 @@ It takes about 10 minutes. The first run after adding new content takes longer �
 The SanDisk is exFAT formatted (cross-platform). If you unplug and replug without a clean unmount:
 
 ```bash
-sudo mount -t exfat -o uid=1000,gid=1000,umask=0022 /dev/sdc2 /mnt/sandisk2tb
+sudo mount -t exfat -o uid=1000,gid=1000,umask=0022 /dev/sdX2 /mnt/backup-drive
 ```
 
 Check the device name first if you're unsure: `lsblk -f` shows all block devices and their filesystems.

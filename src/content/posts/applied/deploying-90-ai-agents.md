@@ -12,6 +12,7 @@ category: ai-ml
 tags: ["open-webui", "ai-agents", "automation", "bash", "api"]
 certTracks: []
 featured: true
+heroImage: "/images/posts/deploying-90-ai-agents.webp"
 draft: false
 ---
 

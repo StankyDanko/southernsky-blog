@@ -12,6 +12,7 @@ category: ai-ml
 tags: ["audio", "machine-learning", "panns", "pytorch", "cli", "sound-classification"]
 certTracks: []
 featured: false
+heroImage: "/images/posts/cairn-ambient-sound-classifier.webp"
 draft: false
 ---
 

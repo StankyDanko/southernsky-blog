@@ -12,6 +12,7 @@ category: ai-ml
 tags: ["documentary", "scene-classification", "fcp", "xml", "ai", "video-production"]
 certTracks: []
 featured: false
+heroImage: "/images/posts/scorsai-beat-indexing-taxonomy.webp"
 draft: false
 ---
 

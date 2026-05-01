@@ -12,6 +12,7 @@ category: linux
 tags: ["vnstat", "systemd", "bandwidth", "monitoring", "python", "alerting"]
 certTracks: ["comptia-network-plus", "comptia-linux-plus"]
 featured: false
+heroImage: "/images/posts/bandwidth-monitoring-vnstat-systemd.webp"
 draft: false
 ---
 
@@ -39,7 +40,7 @@ ip link show
 ```
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536
 2: enp6s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 ...
-3: tailscale0: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1280
+3: wg0: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1280
 ```
 
 My primary interface is `enp6s0`. Add it to vnstat:
@@ -301,11 +302,11 @@ journalctl --user -u bandwidth-check.service --since "24h ago"
 ```
 
 ```
-Mar 12 01:42:05 zeus bandwidth-check.py[38421]: OK — bandwidth within thresholds at 01:42
-Mar 12 02:42:05 zeus bandwidth-check.py[39108]: OK — bandwidth within thresholds at 02:42
-Mar 12 03:42:06 zeus bandwidth-check.py[39891]: OK — bandwidth within thresholds at 03:42
+Mar 12 01:42:05 workstation bandwidth-check.py[38421]: OK — bandwidth within thresholds at 01:42
+Mar 12 02:42:05 workstation bandwidth-check.py[39108]: OK — bandwidth within thresholds at 02:42
+Mar 12 03:42:06 workstation bandwidth-check.py[39891]: OK — bandwidth within thresholds at 03:42
 ...
-Mar 12 09:42:05 zeus bandwidth-check.py[47302]: OK — bandwidth within thresholds at 09:42
+Mar 12 09:42:05 workstation bandwidth-check.py[47302]: OK — bandwidth within thresholds at 09:42
 ```
 
 ## What Happens When a Threshold Trips
@@ -332,7 +333,7 @@ Or route to a Discord webhook, or send yourself an email. The core check script 
 You could use `nethogs`, `iftop`, or even read `/proc/net/dev` yourself. Here's why vnstat is the right tool for this use case:
 
 - **Persistent across reboots** — stores data in a SQLite database, survives power cycles
-- **Interface-level granularity** — tracks each interface separately; Tailscale VPN traffic on `tailscale0` doesn't pollute your physical interface stats
+- **Interface-level granularity** — tracks each interface separately; VPN traffic on a separate tunnel interface doesn't pollute your physical interface stats
 - **No elevated privileges needed** — runs as a normal user once the daemon is set up with root
 - **JSON output** — machine-parseable without screen-scraping
 

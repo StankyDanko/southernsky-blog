@@ -12,6 +12,7 @@ category: web-development
 tags: ["stripe", "saas", "billing", "webhooks", "supabase", "payments"]
 certTracks: []
 featured: false
+heroImage: "/images/posts/stripe-saas-billing.webp"
 draft: false
 ---
 

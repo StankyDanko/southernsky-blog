@@ -12,6 +12,7 @@ category: ai-ml
 tags: ["video-intelligence", "scene-detection", "audio-classification", "face-recognition", "pipeline", "documentary"]
 certTracks: []
 featured: false
+heroImage: "/images/posts/video-intelligence-pipeline.webp"
 draft: false
 ---
 
@@ -220,7 +221,7 @@ Results:
 
 ### Dropbox Bridge
 
-The iPhone→Zeus intake pipeline uses Dropbox as a transfer layer. SaySee watches a Dropbox folder and processes incoming files automatically:
+The iPhone→workstation intake pipeline uses Dropbox as a transfer layer. SaySee watches a Dropbox folder and processes incoming files automatically:
 
 ```python
 # saysee/dropbox_watch.py
@@ -647,7 +648,7 @@ pipeline_output/tape_12/
 
 ---
 
-## Performance Benchmarks (Zeus: i7-12700K, RTX 3080 Ti)
+## Performance Benchmarks (i7-12700K, RTX 3080 Ti)
 
 | Tool | 30-min clip | Notes |
 |------|------------|-------|

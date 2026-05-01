@@ -12,6 +12,7 @@ category: web-development
 tags: ["cesium", "race-condition", "debugging", "closures", "react", "state-management"]
 certTracks: []
 featured: false
+heroImage: "/images/posts/cesium-click-handler-race-conditions.webp"
 draft: false
 ---
 

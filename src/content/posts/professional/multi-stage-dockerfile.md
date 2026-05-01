@@ -12,6 +12,7 @@ category: devops
 tags: ["docker", "dockerfile", "optimization", "nextjs", "deployment", "containers"]
 certTracks: ["aws-saa", "docker-dca"]
 featured: false
+heroImage: "/images/posts/multi-stage-dockerfile.webp"
 draft: false
 ---
 
@@ -228,7 +229,7 @@ set -euo pipefail
 
 IMAGE="omni-web"
 TAG="$(git rev-parse --short HEAD)"
-SERVER="jmartin@104.243.45.247"
+SERVER="deploy@203.0.113.50"
 REMOTE_PATH="/opt/omni"
 
 echo "Building $IMAGE:$TAG..."

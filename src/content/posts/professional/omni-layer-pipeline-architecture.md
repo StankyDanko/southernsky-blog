@@ -12,6 +12,7 @@ category: web-development
 tags: ["cesium", "geospatial", "real-time", "data-pipeline", "performance", "react"]
 certTracks: []
 featured: true
+heroImage: "/images/posts/omni-layer-pipeline-architecture.webp"
 draft: false
 ---
 

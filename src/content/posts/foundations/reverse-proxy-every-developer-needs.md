@@ -12,12 +12,13 @@ category: networking
 tags: ["caddy", "reverse-proxy", "https", "tls", "web-server", "nginx"]
 certTracks: ["comptia-network-plus"]
 featured: false
+heroImage: "/images/posts/reverse-proxy-every-developer-needs.webp"
 draft: false
 ---
 
 ## Why Should You Care?
 
-I run five separate web services on a single VPS. A blog, an AI chat interface, an admin panel, a marketing site, and an API. All of them live on the same IP address: `104.243.45.247`.
+I run five separate web services on a single VPS. A blog, an AI chat interface, an admin panel, a marketing site, and an API. All of them live on the same IP address: `203.0.113.50`.
 
 So how does `blog.southernsky.cloud` go to the blog, but `chat.southernsky.cloud` goes to the AI interface — and both are HTTPS with valid certificates?
 
@@ -42,7 +43,7 @@ The naive approach: run your blog on port 4006, your chat interface on port 3000
 
 Problems with this:
 
-1. **Ugly URLs** — `https://104.243.45.247:4006` instead of `https://blog.southernsky.cloud`
+1. **Ugly URLs** — `https://203.0.113.50:4006` instead of `https://blog.southernsky.cloud`
 2. **No HTTPS** — Browsers will warn users about insecure connections. TLS certificates bind to port 443.
 3. **Port juggling** — You'd need to tell every user which port does what
 4. **No central logging or rate limiting** — Each service manages itself
@@ -111,7 +112,7 @@ And you'd still need to run `certbot` separately and set up a cron job for renew
 
 When a browser connects to `blog.southernsky.cloud`:
 
-1. Browser connects to port 443 on `104.243.45.247`
+1. Browser connects to port 443 on `203.0.113.50`
 2. Caddy presents its TLS certificate for `blog.southernsky.cloud`
 3. Browser verifies the certificate was signed by a trusted CA (Let's Encrypt)
 4. An encrypted tunnel is established

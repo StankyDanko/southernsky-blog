@@ -12,6 +12,7 @@ category: ai-ml
 tags: ["nlp", "command-palette", "ai", "typescript", "ux", "search"]
 certTracks: []
 featured: false
+heroImage: "/images/posts/lens-nlp-action-dispatcher.webp"
 draft: false
 ---
 

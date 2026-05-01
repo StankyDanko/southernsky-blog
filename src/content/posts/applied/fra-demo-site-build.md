@@ -12,6 +12,7 @@ category: web-development
 tags: ["react", "vite", "tailwind", "github-pages", "demo", "ffmpeg"]
 certTracks: []
 featured: false
+heroImage: "/images/posts/fra-demo-site-build.webp"
 draft: false
 ---
 

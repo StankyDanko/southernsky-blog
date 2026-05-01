@@ -8,15 +8,27 @@ interface Props {
   publishDate: Date
   estimatedMinutes: number
   tags?: string[]
+  heroImage?: string
 }
 
-const { title, description, href, tier, category, publishDate, estimatedMinutes, tags = [] } = Astro.props
+const { title, description, href, tier, category, publishDate, estimatedMinutes, tags = [], heroImage } = Astro.props
+const videoSrc = heroImage?.replace(/\.webp$/, '.webm')
 
 const tierLabel = { foundations: 'Foundations', applied: 'Applied', professional: 'Professional' }
 const dateStr = publishDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 ---
 
-<a href={href} class="post-card block group">
+<a href={href} class="post-card block group overflow-hidden">
+  {heroImage && (
+    <div class="post-card__hero relative w-full h-36 overflow-hidden" data-video-src={videoSrc}>
+      <img
+        src={heroImage}
+        alt={title}
+        class="w-full h-full object-cover"
+        loading="lazy"
+      />
+    </div>
+  )}
   <div class="p-5">
     <div class="flex items-center gap-2 mb-3">
       <span class={`tier-badge tier-badge--${tier}`}>{tierLabel[tier]}</span>
@@ -48,3 +60,41 @@ const dateStr = publishDate.toLocaleDateString('en-US', { month: 'short', day: '
     </div>
   </div>
 </a>
+
+<script>
+  if (window.matchMedia('(hover: hover)').matches) {
+    document.querySelectorAll('.post-card__hero').forEach(hero => {
+      const videoSrc = hero.getAttribute('data-video-src');
+      if (!videoSrc) return;
+
+      let video: HTMLVideoElement | null = null;
+      let loaded = false;
+
+      hero.addEventListener('mouseenter', () => {
+        if (!video) {
+          video = document.createElement('video');
+          video.muted = true;
+          video.loop = true;
+          video.playsInline = true;
+          video.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover';
+          const source = document.createElement('source');
+          source.src = videoSrc;
+          source.type = 'video/webm';
+          video.appendChild(source);
+          video.addEventListener('canplay', () => { loaded = true; }, { once: true });
+          source.addEventListener('error', () => { video = null; }, { once: true });
+          hero.appendChild(video);
+          video.load();
+        }
+        if (video) video.play().catch(() => {});
+      });
+
+      hero.addEventListener('mouseleave', () => {
+        if (video) {
+          video.pause();
+          video.currentTime = 0;
+        }
+      });
+    });
+  }
+</script>

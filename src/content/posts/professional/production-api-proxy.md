@@ -12,6 +12,7 @@ category: cybersecurity
 tags: ["api-proxy", "security", "rate-limiting", "caching", "ssrf", "nextjs"]
 certTracks: ["comptia-security-plus"]
 featured: false
+heroImage: "/images/posts/production-api-proxy.webp"
 draft: false
 ---
 
