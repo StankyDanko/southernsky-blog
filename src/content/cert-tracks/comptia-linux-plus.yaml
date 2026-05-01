@@ -1,0 +1,12 @@
+name: "CompTIA Linux+ (XK0-005)"
+shortName: "Linux+"
+vendor: CompTIA
+examCode: "XK0-005"
+description: >-
+  Validates the skills needed to configure, manage, and troubleshoot
+  Linux systems in enterprise environments.
+color: amber
+postOrder:
+  - "gpu-power-management"
+  - "backups-5-tier-system"
+  - "bandwidth-monitoring-vnstat-systemd"

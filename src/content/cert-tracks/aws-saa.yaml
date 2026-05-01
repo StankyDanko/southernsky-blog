@@ -1,0 +1,10 @@
+name: "AWS Solutions Architect Associate (SAA-C03)"
+shortName: "AWS SAA"
+vendor: Amazon Web Services
+examCode: "SAA-C03"
+description: >-
+  Design secure, resilient, high-performing, and cost-optimized
+  architectures on AWS.
+color: orange
+postOrder:
+  - "multi-stage-dockerfile"

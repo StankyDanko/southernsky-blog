@@ -8,6 +8,6 @@ description: >-
 color: green
 postOrder:
   - "what-is-the-internet-really"
-  - "your-first-linux-terminal"
   - "gpu-power-management"
   - "backups-5-tier-system"
+  - "personal-ai-lab"

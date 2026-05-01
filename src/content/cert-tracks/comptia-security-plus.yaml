@@ -1,0 +1,11 @@
+name: "CompTIA Security+ (SY0-701)"
+shortName: "Sec+"
+vendor: CompTIA
+examCode: "SY0-701"
+description: >-
+  The baseline cybersecurity certification. Covers threats, vulnerabilities,
+  architecture, operations, and incident response.
+color: red
+postOrder:
+  - "tactical-id-face-recognition"
+  - "production-api-proxy"

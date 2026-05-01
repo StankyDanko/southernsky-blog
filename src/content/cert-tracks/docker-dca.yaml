@@ -1,0 +1,10 @@
+name: "Docker Certified Associate"
+shortName: "DCA"
+vendor: Mirantis
+examCode: "DCA"
+description: >-
+  Validates container orchestration skills — image building, networking,
+  storage, security, and Docker Enterprise features.
+color: sky
+postOrder:
+  - "multi-stage-dockerfile"
