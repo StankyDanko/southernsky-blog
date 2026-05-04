@@ -64,10 +64,12 @@ southernsky-blog/
 │   ├── styles/global.css     # Tailwind directives, prose overrides
 │   └── lib/                  # Utilities (reading time, structured data, search index)
 ├── public/                   # Static assets (images, fonts, favicon)
-├── scripts/                  # CLI tools (new-post, generate-hero, convert-animations)
+├── scripts/                  # CLI tools (new-post, generate-hero, animate-hero, convert-animations)
 ├── CONTENT-PLAN.md           # 23 seed posts mapped from real projects
 ├── STRATEGY.md               # Distilled strategic playbook
-├── research-content-strategy.md  # Full Grok research
+├── research-content-strategy.md  # Early content strategy (in-project; 13+ newer research files in ~/tools/research/archive/)
+├── DEV_OUTLINE.md            # Living roadmap — phases, analytics, distribution, research archive
+├── DISTRIBUTION-PLAN.md      # Platform playbooks, timing, automation, compliance
 ├── Dockerfile                # nginx:alpine static container
 ├── docker-compose.yml        # VPS deployment (port 4006:3000)
 └── nginx.conf                # SPA routing
@@ -120,15 +122,29 @@ networking, web-development, cybersecurity, ai-ml, linux, cloud-computing, pytho
 
 ## Agent Content Pipeline
 
-### Quick Workflow (from any Claude session on Zeus)
+### Automated Pipeline (preferred — one command does everything)
+
+When Justin says **"create a blog post about [topic]"**, run the full automated pipeline:
+
+```bash
+cd ~/projects/southernsky-blog
+node scripts/blog-pipeline.mjs "topic description" [--tier applied] [--category ai-ml]
+```
+
+This chains all 6 stages automatically: Blog Writer → Blog Polish → Hero Image + Animation → Sanitization Sweep → Build Validation → Deploy to VPS.
+
+Options: `--no-animate` (skip animation), `--no-deploy` (skip deploy), `--dry-run` (writer only, draft mode).
+
+### Manual Workflow (individual steps when needed)
 
 ```
-"Write a blog post about [topic]"
+"Invoke the Blog Writer agent for [topic]"
   → Blog Writer agent researches + generates markdown
   → File saved to src/content/posts/{tier}/{slug}.md
-"Polish the post at src/content/posts/{tier}/{slug}.md"
+"Invoke the Blog Polish agent on [path]"
   → Blog Polish agent reviews: reputation, tone, influence, structure
   → Polished file replaces original
+node scripts/generate-hero.mjs <slug> --animate   → hero image + animated WebM (one-shot)
 npm run check    → Zod validates frontmatter
 node deploy.mjs  → Build + deploy to blog.southernsky.cloud
 ```
@@ -140,6 +156,7 @@ node deploy.mjs  → Build + deploy to blog.southernsky.cloud
 | **Blog Writer** | `~/.claude/agents/blog-writer.md` | ID: `blog-writer` |
 | **Blog Polish** | `~/.claude/agents/blog-polish.md` | ID: `blog-polish` |
 
+- **Search existing research** before invoking new queries: `node ~/tools/research/search-research.mjs "topic"` (FTS5, 501+ files)
 - **Local agents** run via Claude Code subagent dispatch — no VPS needed, can research codebase directly
 - **Remote agents** run on Grok API through Open WebUI — good for standalone use from any device
 - Both share the same system prompts and guardrails
@@ -163,7 +180,9 @@ Reviews posts through a 7-task checklist integrating influence techniques from T
 1. Blog Writer agent generates markdown with complete frontmatter
 2. Save to `src/content/posts/{tier}/{slug}.md`
 3. Blog Polish agent reviews and refines (reputation, tone, influence)
-4. `node scripts/generate-hero.mjs <slug>` generates branded hero image (or `--all` for batch)
+4. `node scripts/generate-hero.mjs <slug> --animate` generates branded hero + animated WebM in one shot
+   - Requires id8 server + ComfyUI running (`http://localhost:8802` + `http://localhost:8188`)
+   - Without `--animate`: static hero only (use `node scripts/animate-hero.mjs <slug>` later)
 5. Security sweep: grep for PII per `SANITIZATION-GUIDE.md` rules
 6. `npm run check` validates frontmatter via Zod
 7. Human review (Justin scans the diff)
@@ -177,13 +196,17 @@ Reviews posts through a 7-task checklist integrating influence techniques from T
 - Converts to 1200x630 WebP via ImageMagick
 - Usage: `node scripts/generate-hero.mjs <slug>` or `--all` for batch
 
-**Animated heroes** (`scripts/convert-animations.sh` + id8 I2V):
-- id8 batch processor renders 3-second I2V clips from hero images (Wan 2.1 14B, 624x352, 24fps)
-- Convert script transforms MP4 output → WebM (libvpx-vp9, 500k, CRF 35)
-- All 48 posts have animated WebM heroes (completed 2026-05-01)
+**Animated heroes** (`scripts/animate-hero.mjs` + id8 I2V):
+- `animate-hero.mjs` handles the full animation lifecycle: copy to id8 input → queue I2V render → poll → convert to WebM
+- id8 batch processor renders 3-second I2V clips (Wan 2.1 14B, 624x352, 24fps, 73 frames)
+- Converts MP4 output → WebM (libvpx-vp9, 500k, CRF 35, crop to 1200x630)
+- **One-shot:** `node scripts/generate-hero.mjs <slug> --animate` (generates static + animated in one command)
+- **Standalone:** `node scripts/animate-hero.mjs <slug>` (queue + wait + convert)
+- **Batch convert:** `node scripts/animate-hero.mjs --convert` (convert all completed renders)
+- **Legacy:** `bash scripts/convert-animations.sh` (reads from id8 DB, same as animate-hero --convert)
 - `AnimatedHero.astro` — progressive enhancement on post pages and homepage featured: static WebP first, video loaded via JS on `canplay`
 - `PostCard.astro` — hover-to-animate on listing pages (homepage recent, category, tag pages). Desktop only via `matchMedia('(hover: hover)')`. Video created lazily on first hover, no bandwidth cost for un-hovered cards.
-- Usage: `bash scripts/convert-animations.sh` (or `--status`, `--dry-run`)
+- Requires: id8 server running on port 8802, ComfyUI on port 8188
 
 **OG Image:**
 - Site-wide default: `/images/og-image.png` (1200x630, created with dedit editor at `~/tools/image-editor/`)
@@ -236,8 +259,19 @@ Caddy routes `blog.southernsky.cloud` → Docker bridge gateway:4006.
 - Original explanations, labs, and analogies
 - No vendor logos without permission
 
+## YouTube Channel (J. Kenneth Martin)
+
+Full strategy in `YOUTUBE-STRATEGY.md`. The blog is the content engine that feeds the YouTube channel:
+- Blog post → video script adaptation → OBS recording → DaVinci Resolve edit → YouTube publish
+- Every video links back to its blog post for the written version
+- Playlists function as modular curriculum (Computer Science 101, Web Dev Bootcamp, etc.)
+- Channel serves dual purpose: developer audience + FRA teaching portfolio
+- 30-video roadmap mapped to existing blog content categories
+- Identity: J. Kenneth Martin (educator) is strictly firewalled from StankyDanko (creative)
+
 ## Related Projects
 
 - `~/projects/SouthernSky/` — Company landing page (southernsky.cloud)
 - `~/projects/fra/` — FRA demo site (fra-demo.southernsky.cloud)
 - `~/projects/coach-martin/` — Educator portfolio (coachmartin.southernsky.cloud)
+- `~/projects/kenneth-martin/` — Documentary + movement + brand (separate from YouTube educator channel)

@@ -168,15 +168,19 @@ function generateImage(slug, subject) {
 const args = process.argv.slice(2);
 const force = args.includes('--force');
 const all = args.includes('--all');
+const animate = args.includes('--animate');
 const subjectIdx = args.indexOf('--subject');
 const overrideSubject = subjectIdx !== -1 ? args[subjectIdx + 1] : null;
+const ANIMATE_SCRIPT = resolve(import.meta.dirname, 'animate-hero.mjs');
 
 if (args.includes('--help') || (!all && args.filter(a => !a.startsWith('--')).length === 0)) {
   console.log(`
 generate-hero.mjs — Branded hero image generator for SouthernSky Blog
 
   node scripts/generate-hero.mjs <slug>                    Single post
-  node scripts/generate-hero.mjs --all                     All missing images
+  node scripts/generate-hero.mjs <slug> --animate          Generate + animate (full pipeline)
+  node scripts/generate-hero.mjs --all                     All posts missing images
+  node scripts/generate-hero.mjs --all --animate           Generate + animate all missing
   node scripts/generate-hero.mjs --all --force             Regenerate everything
   node scripts/generate-hero.mjs <slug> --subject "desc"   Custom subject override
 `);
@@ -185,16 +189,32 @@ generate-hero.mjs — Branded hero image generator for SouthernSky Blog
 
 const posts = findAllPosts();
 
+function animateSlug(slug, queueOnly = false) {
+  const animateArgs = queueOnly ? '--queue' : '';
+  try {
+    execSync(`node "${ANIMATE_SCRIPT}" "${slug}" ${animateArgs}`, { stdio: 'inherit', timeout: 180000 });
+  } catch (e) {
+    console.log(`    WARN: Animation failed for ${slug}`);
+  }
+}
+
 if (all) {
   const targets = force ? posts : posts.filter(p => !p.hasImage);
   console.log(`\nGenerating ${targets.length} hero images...\n`);
   let ok = 0, fail = 0;
   for (const post of targets) {
     const subject = titleToSubject(post.title, post.description);
-    if (generateImage(post.slug, subject)) ok++;
-    else fail++;
+    if (generateImage(post.slug, subject)) {
+      ok++;
+      if (animate) animateSlug(post.slug, targets.length > 1);
+    } else {
+      fail++;
+    }
   }
   console.log(`\nDone: ${ok} generated, ${fail} failed out of ${targets.length} total.`);
+  if (animate && targets.length > 1) {
+    console.log('\nAnimations queued. Run `node scripts/animate-hero.mjs --convert` after renders complete.');
+  }
 } else {
   const slug = args.find(a => !a.startsWith('--'));
   const post = posts.find(p => p.slug === slug);
@@ -205,7 +225,10 @@ if (all) {
   const subject = overrideSubject || titleToSubject(post.title, post.description);
   if (!force && post.hasImage) {
     console.log(`${slug}.webp already exists. Use --force to regenerate.`);
+    if (animate) animateSlug(post.slug);
     process.exit(0);
   }
-  generateImage(post.slug, subject);
+  if (generateImage(post.slug, subject) && animate) {
+    animateSlug(post.slug);
+  }
 }
