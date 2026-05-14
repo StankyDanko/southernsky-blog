@@ -11,7 +11,7 @@ prerequisites: ["react", "typescript"]
 category: web-development
 tags: ["cesium", "geospatial", "real-time", "data-pipeline", "performance", "react"]
 certTracks: []
-featured: true
+featured: false
 heroImage: "/images/posts/omni-layer-pipeline-architecture.webp"
 draft: false
 ---

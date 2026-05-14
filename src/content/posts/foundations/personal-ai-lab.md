@@ -11,7 +11,7 @@ prerequisites: []
 category: ai-ml
 tags: ["ollama", "ai", "local-llm", "gpu", "home-lab", "privacy"]
 certTracks: ["comptia-a-plus"]
-featured: true
+featured: false
 heroImage: "/images/posts/personal-ai-lab.webp"
 draft: false
 ---

@@ -11,7 +11,7 @@ prerequisites: []
 category: ai-ml
 tags: ["open-webui", "ai-agents", "automation", "bash", "api"]
 certTracks: []
-featured: true
+featured: false
 heroImage: "/images/posts/deploying-90-ai-agents.webp"
 draft: false
 ---

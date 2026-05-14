@@ -11,7 +11,7 @@ prerequisites: ["javascript"]
 category: creative-tools
 tags: ["video-editing", "fcpxml", "automation", "final-cut-pro", "pipeline"]
 heroImage: "/images/posts/programmatic-fcpxml-split-edits.webp"
-featured: true
+featured: false
 draft: false
 ---
 

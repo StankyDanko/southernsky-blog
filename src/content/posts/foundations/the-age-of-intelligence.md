@@ -11,7 +11,7 @@ prerequisites: []
 category: ai-ml
 tags: ["ai", "intelligence", "philosophy", "builders", "agents", "future"]
 certTracks: []
-featured: true
+featured: false
 heroImage: "/images/posts/the-age-of-intelligence.webp"
 draft: false
 ---

@@ -12,7 +12,7 @@ category: ai-ml
 tags: ["agent-core", "lora", "fine-tuning", "tool-calling", "qlora", "qwen", "southernsky", "open-source"]
 certTracks: []
 heroImage: "/images/posts/agent-core-database-native-tools.webp"
-featured: true
+featured: false
 draft: false
 ---
 
